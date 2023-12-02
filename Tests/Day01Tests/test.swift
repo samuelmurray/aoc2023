@@ -1,6 +1,6 @@
 import XCTest
-import utils
-import d01
+import Utils
+import Day01
 
 class ParseTests: XCTestCase {
     func test1_1() {

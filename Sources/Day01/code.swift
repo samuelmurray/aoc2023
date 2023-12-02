@@ -1,5 +1,5 @@
 import Foundation
-import utils
+import Utils
 
 public func getNumber(_ input: String) -> Int {
     var digits: [Character] = []

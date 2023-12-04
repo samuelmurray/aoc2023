@@ -4,3 +4,7 @@ root = true
 # Unix-style newlines with a newline ending every file
 [*]
 end_of_line = lf
+
+[*.swift]
+indent_style = space
+indent_size = 2

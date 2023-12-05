@@ -110,6 +110,67 @@ class Day05Tests: XCTestCase {
     XCTAssertEqual([0, 49, 50, 97, 98, 99, 100], values)
   }
 
+  func testFlattenMapsSingleMap() {
+    let map = AlmanacMap([
+      AlmanacMapRange(source: 98, destination: 50, length: 2),
+      AlmanacMapRange(source: 50, destination: 52, length: 48),
+    ])
+    let result = flattenMaps([map])
+    XCTAssertEqual(map, result)
+  }
+
+  func testFlattenMapsFirstEmptyMap() {
+    let map = AlmanacMap([
+      AlmanacMapRange(source: 98, destination: 50, length: 2),
+      AlmanacMapRange(source: 50, destination: 52, length: 48),
+    ])
+    let result = flattenMaps([AlmanacMap([]), map])
+    XCTAssertEqual(map, result)
+  }
+
+  func testFlattenMapsSecondEmptyMap() {
+    let map = AlmanacMap([
+      AlmanacMapRange(source: 98, destination: 50, length: 2),
+      AlmanacMapRange(source: 50, destination: 52, length: 48),
+    ])
+    let result = flattenMaps([map, AlmanacMap([])])
+    XCTAssertEqual(map, result)
+  }
+
+  func testFlattenMapsTwoLayers() {
+    let map1 = AlmanacMap([
+      AlmanacMapRange(source: 1, destination: 2, length: 1),
+      AlmanacMapRange(source: 2, destination: 1, length: 1),
+    ])
+    let map2 = AlmanacMap([
+      AlmanacMapRange(source: 51, destination: 52, length: 1),
+      AlmanacMapRange(source: 52, destination: 51, length: 1),
+    ])
+    let expected = AlmanacMap([
+      AlmanacMapRange(source: 1, destination: 2, length: 1),
+      AlmanacMapRange(source: 2, destination: 1, length: 1),
+      AlmanacMapRange(source: 51, destination: 52, length: 1),
+      AlmanacMapRange(source: 52, destination: 51, length: 1),
+    ])
+    let result = flattenMaps([map1, map2])
+    XCTAssertEqual(expected, result)
+  }
+
+  func testFlattenMapsTwoLayersAdvanced() {
+    let map1 = AlmanacMap([
+      AlmanacMapRange(source: 10, destination: 20, length: 10),
+    ])
+    let map2 = AlmanacMap([
+      AlmanacMapRange(source: 20, destination: 30, length: 5),
+    ])
+    let expected = AlmanacMap([
+      AlmanacMapRange(source: 10, destination: 30, length: 5),
+      AlmanacMapRange(source: 15, destination: 25, length: 5),
+    ])
+    let result = flattenMaps(map1, map2)
+    XCTAssertEqual(expected, result)
+  }
+
   func testGivenInput1() {
     let filePath = Bundle.module.url(forResource: "test-input1", withExtension: "txt")!
     let input = readFile(filePath)
@@ -132,7 +193,7 @@ class Day05Tests: XCTestCase {
     let filePath = Bundle.module.url(forResource: "test-input1", withExtension: "txt")!
     let input = readFile(filePath)
 
-    let result = computeLowestLocation2(input)
+    let result = computeLowestLocationByFlatten(input)
 
     XCTAssertEqual(46, result)
   }
@@ -141,7 +202,7 @@ class Day05Tests: XCTestCase {
     let filePath = Bundle.module.url(forResource: "input1", withExtension: "txt")!
     let input = readFile(filePath)
 
-    let result = computeLowestLocation2(input)
+    let result = computeLowestLocationByFlatten(input)
 
     print(result)
   }

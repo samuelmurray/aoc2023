@@ -37,7 +37,7 @@ public struct Seed: RowObject {
   }
 }
 
-public struct AlmanacMapRange {
+public struct AlmanacMapRange: Equatable {
   public static var regexp = try! NSRegularExpression(pattern: "(\\d+)")
   let source: Int
   let destination: Int
@@ -60,11 +60,15 @@ public struct AlmanacMapRange {
   }
 }
 
-public struct AlmanacMap {
+extension AlmanacMapRange {
+  var sourceEnd: Int { source + length }
+}
+
+public struct AlmanacMap: Equatable {
   let ranges: [AlmanacMapRange]
 
   public init(_ ranges: [AlmanacMapRange]) {
-    self.ranges = ranges
+    self.ranges = ranges.sorted(by: { a, b in a.source < b.source })
   }
 }
 
@@ -182,7 +186,7 @@ public func computeLowestLocation2(_ input: [String]) -> Int {
 
 public func computeLowestLocation2_slow(_ input: [String]) -> Int {
   let (seedRanges, maps) = parseInputWithSeedRanges(input)
-  for i in (15_880_234..<99_999_999) { // "answer - 2" inserted
+  for i in (15_880_234..<99_999_999) {  // "answer - 2" inserted
     var destination = i
     for map in maps.reversed() {
       destination = map.getSource(ofDestination: destination)
@@ -194,6 +198,45 @@ public func computeLowestLocation2_slow(_ input: [String]) -> Int {
   return -1
 }
 
+public func computeLowestLocationByFlatten(_ input: [String]) -> Int {
+  let (seedRanges, maps) = parseInputWithSeedRanges(input)
+  let flattenedMap = flattenMaps(maps)
+  let sources = flattenedMap.ranges.map { $0.source }.filter { isValidSource($0, seedRanges) }
+  return sources.map { flattenedMap.getDestination(ofSource: $0) }.min() ?? -1
+}
+
+struct Range: Hashable {
+  let start: Int
+  let end: Int
+  init(_ start: Int, _ end: Int) {
+    self.start = start
+    self.end = end
+  }
+}
+
 func isValidSource(_ source: Int, _ ranges: [SeedRange]) -> Bool {
   ranges.contains { source >= $0.start && source < $0.start + $0.range }
+}
+
+public func flattenMaps(_ maps: [AlmanacMap]) -> AlmanacMap {
+  maps.reduce(AlmanacMap([]), { flattenMaps($0, $1) })
+}
+
+public func flattenMaps(_ first: AlmanacMap, _ second: AlmanacMap) -> AlmanacMap {
+  let secondBreakpoints = Set(second.ranges.flatMap { [$0.source, $0.sourceEnd] }.map { first.getSource(ofDestination: $0)})
+  let firstBreakpoints = Set(first.ranges.flatMap { [$0.source, $0.sourceEnd]})
+  let allBreakpoints = firstBreakpoints.union(secondBreakpoints).union([0]).sorted()
+
+  var ranges: [Range] = []
+  for i in 0..<allBreakpoints.count - 1 {
+    ranges.append(Range(allBreakpoints[i], allBreakpoints[i + 1]))
+  }
+
+  let result = ranges.map {
+    AlmanacMapRange(
+      source: $0.start,
+      destination: second.getDestination(ofSource: first.getDestination(ofSource: $0.start)),
+      length: $0.end - $0.start)
+  }.filter { $0.source != $0.destination }
+  return AlmanacMap(result)
 }

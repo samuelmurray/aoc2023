@@ -24,7 +24,21 @@ extension String {
   }
 }
 
-public func parseRowObjects<T: RowObject>(input: String, rowNumber: Int, type: T.Type) -> [T] {
+public func parseRowObjects<T: RowObject>(input: String, type: T.Type) -> [T] {
+  var result: [T] = []
+  let matches = type.regexp.matches(in: input, range: NSRange(location: 0, length: input.count))
+  for match in matches {
+    let content = String(input[Range(match.range, in: input)!])
+    result.append(
+      try! T(content: content)
+    )
+  }
+  return result
+}
+
+public func parsePositionalRowObjects<T: PositionalRowObject>(
+  input: String, rowNumber: Int, type: T.Type
+) -> [T] {
   var result: [T] = []
   let matches = type.regexp.matches(in: input, range: NSRange(location: 0, length: input.count))
   for match in matches {
@@ -39,18 +53,23 @@ public func parseRowObjects<T: RowObject>(input: String, rowNumber: Int, type: T
 
 public protocol RowObject {
   static var regexp: NSRegularExpression { get }
+  init(content: String) throws
+}
+
+public protocol PositionalRowObject {
+  static var regexp: NSRegularExpression { get }
   var row: Int { get }
   var startPosition: Int { get }
   var length: Int { get }
   init(row: Int, startPosition: Int, length: Int, content: String) throws
 }
 
-extension RowObject {
-  public func adjacent(other: RowObject) -> Bool {
+public extension PositionalRowObject {
+  func adjacent(other: PositionalRowObject) -> Bool {
     return (self.row >= other.row - 1 && self.row <= other.row + 1)
       && (self.endPosition >= other.startPosition - 1
         && self.startPosition <= other.endPosition + 1)
   }
 
-  public var endPosition: Int { startPosition + length - 1 }
+  var endPosition: Int { startPosition + length - 1 }
 }

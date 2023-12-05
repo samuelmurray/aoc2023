@@ -1,7 +1,7 @@
 import Foundation
 import Utils
 
-public struct PartNumber: RowObject {
+public struct PartNumber: PositionalRowObject {
   public static let regexp = try! NSRegularExpression(pattern: "(\\d+)")
   public let number: Int
   public let startPosition: Int
@@ -20,7 +20,7 @@ public struct PartNumber: RowObject {
   }
 }
 
-public struct Symbol: RowObject {
+public struct Symbol: PositionalRowObject {
   public static let regexp = try! NSRegularExpression(pattern: "([^.A-Z0-9])")
   public let symbol: Character
   public let column: Int
@@ -49,9 +49,9 @@ public struct Gear {
 public func parseRow(input: String, rowNumber: Int) -> (
   partNumbers: [PartNumber], symbols: [Symbol]
 ) {
-  let partNumbers = parseRowObjects(input: input, rowNumber: rowNumber, type: PartNumber.self)
+  let partNumbers = parsePositionalRowObjects(input: input, rowNumber: rowNumber, type: PartNumber.self)
 
-  let symbols = parseRowObjects(input: input, rowNumber: rowNumber, type: Symbol.self)
+  let symbols = parsePositionalRowObjects(input: input, rowNumber: rowNumber, type: Symbol.self)
 
   return (partNumbers, symbols)
 }

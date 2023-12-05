@@ -11,5 +11,5 @@ fi
 mkdir Sources/Day${1}
 touch Sources/Day${1}/code.swift
 mkdir Tests/Day${1}Tests
-touch Sources/Day${1}Tests/test.swift
+touch Tests/Day${1}Tests/test.swift
 mkdir Tests/Day${1}Tests/Resources

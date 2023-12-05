@@ -37,7 +37,7 @@ public struct Seed: RowObject {
   }
 }
 
-public struct AlmanacMapRange {
+public struct AlmanacMapRange: Equatable {
   public static var regexp = try! NSRegularExpression(pattern: "(\\d+)")
   let source: Int
   let destination: Int
@@ -60,11 +60,15 @@ public struct AlmanacMapRange {
   }
 }
 
-public struct AlmanacMap {
+extension AlmanacMapRange {
+  var sourceEnd: Int { source + length }
+}
+
+public struct AlmanacMap: Equatable {
   let ranges: [AlmanacMapRange]
 
   public init(_ ranges: [AlmanacMapRange]) {
-    self.ranges = ranges
+    self.ranges = ranges.sorted(by: { a, b in a.source < b.source })
   }
 }
 
@@ -182,7 +186,7 @@ public func computeLowestLocation2(_ input: [String]) -> Int {
 
 public func computeLowestLocation2_slow(_ input: [String]) -> Int {
   let (seedRanges, maps) = parseInputWithSeedRanges(input)
-  for i in (15_880_234..<99_999_999) { // "answer - 2" inserted
+  for i in (15_880_234..<99_999_999) {  // "answer - 2" inserted
     var destination = i
     for map in maps.reversed() {
       destination = map.getSource(ofDestination: destination)
@@ -194,6 +198,93 @@ public func computeLowestLocation2_slow(_ input: [String]) -> Int {
   return -1
 }
 
+public func computeLowestLocationByFlatten(_ input: [String]) -> Int {
+  let (seedRanges, maps) = parseInputWithSeedRanges(input)
+  let flattenedMap = flattenMaps(maps)
+  print(flattenedMap)
+  let sources = flattenedMap.ranges.map { $0.source }.filter { isValidSource($0, seedRanges) }
+  return sources.map { flattenedMap.getDestination(ofSource: $0) }.min() ?? -1
+}
+
+struct Range: Hashable {
+  let start: Int
+  let end: Int
+  init(_ start: Int, _ end: Int) {
+    self.start = start
+    self.end = end
+  }
+}
+
 func isValidSource(_ source: Int, _ ranges: [SeedRange]) -> Bool {
   ranges.contains { source >= $0.start && source < $0.start + $0.range }
+}
+
+public func flattenMaps(_ maps: [AlmanacMap]) -> AlmanacMap {
+  maps.reduce(AlmanacMap([]), { flattenMaps($0, $1) })
+}
+
+public func flattenMaps(_ first: AlmanacMap, _ second: AlmanacMap) -> AlmanacMap {
+  let intermediateRanges = second.ranges.map { Range($0.source, $0.sourceEnd) }
+  let newRanges = intermediateRanges.map { range in
+    return Range(
+      first.getSource(ofDestination: range.start), first.getSource(ofDestination: range.end))
+  }.sorted(by: { a, b in a.start < b.start })
+  let originalRanges = first.ranges.map {
+    Range($0.source, $0.sourceEnd)
+  }.sorted(by: { a, b in
+    a.start < b.start
+  })
+
+  var combinedRanges: [Range] = []
+  let largestRangeEnd = max(
+    newRanges.map { $0.end }.max() ?? 0, originalRanges.map { $0.end }.max() ?? 0)
+  var pointer = 0
+  var isCreatingRange = false
+  var lower = 0
+  while pointer <= largestRangeEnd + 1 {
+    print(pointer)
+    print(isCreatingRange)
+    if !isCreatingRange {
+      let smallestNewStart =
+        newRanges.filter { $0.start >= pointer }.first?.start ?? 999_999_999_999_999_999
+      let smallestNewEnd =
+        newRanges.filter { $0.end >= pointer }.first?.end ?? 999_999_999_999_999_999
+      let smallestOrigStart =
+        originalRanges.filter { $0.start >= pointer }.first?.start ?? 999_999_999_999_999_999
+      let smallestOrigEnd =
+        originalRanges.filter { $0.end >= pointer }.first?.end ?? 999_999_999_999_999_999
+      let start = min(smallestNewStart, smallestNewEnd, smallestOrigStart, smallestOrigEnd)
+      lower = start
+      pointer = start + 1
+      isCreatingRange = true
+    } else {
+      let smallestNewStart =
+        newRanges.filter { $0.start >= pointer }.first?.start ?? 999_999_999_999_999_999
+      let smallestNewEnd =
+        newRanges.filter { $0.end >= pointer }.first?.end ?? 999_999_999_999_999_999
+      let smallestOrigStart =
+        originalRanges.filter { $0.start >= pointer }.first?.start ?? 999_999_999_999_999_999
+      let smallestOrigEnd =
+        originalRanges.filter { $0.end >= pointer }.first?.end ?? 999_999_999_999_999_999
+      let end = min(smallestNewStart, smallestNewEnd, smallestOrigStart, smallestOrigEnd)
+      if smallestNewEnd == end || smallestOrigEnd == end {
+        combinedRanges.append(Range(lower, end))
+        pointer = end
+        isCreatingRange = false
+      } else {
+        combinedRanges.append(Range(lower, end))
+        pointer = end
+        isCreatingRange = false
+      }
+    }
+  }
+  print(pointer)
+  print(isCreatingRange)
+  let result = combinedRanges.map {
+    AlmanacMapRange(
+      source: $0.start,
+      destination: second.getDestination(ofSource: first.getDestination(ofSource: $0.start)),
+      length: $0.end - $0.start)
+  }
+  return AlmanacMap(result)
 }

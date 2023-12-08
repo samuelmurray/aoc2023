@@ -19,6 +19,7 @@ let package = Package(
     .target(name: "Day05"),
     .target(name: "Day06"),
     .target(name: "Day07"),
+    .target(name: "Day08"),
     .testTarget(
       name: "UtilsTests",
       dependencies: ["Utils"],
@@ -71,6 +72,13 @@ let package = Package(
     .testTarget(
       name: "Day07Tests",
       dependencies: ["Day07", "Utils"],
+      resources: [
+        .copy("Resources")
+      ]
+    ),
+      .testTarget(
+      name: "Day08Tests",
+      dependencies: ["Day08", "Utils"],
       resources: [
         .copy("Resources")
       ]

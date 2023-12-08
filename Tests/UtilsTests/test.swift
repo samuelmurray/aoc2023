@@ -19,4 +19,12 @@ class UtilsTests: XCTestCase {
     let match = try? digits.firstMatch(in: "467..114..")
     XCTAssertEqual("467", match?.0)
   }
+
+  func testGcd() {
+    XCTAssertEqual(2, gcd(6, 10))
+  }
+
+  func testLcm() {
+    XCTAssertEqual(6, lcm(2, 3))
+  }
 }

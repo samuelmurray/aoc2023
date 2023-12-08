@@ -22,6 +22,36 @@ extension String {
   public func suffix(from: Int) -> String {
     return String(self.suffix(from: self.index(self.startIndex, offsetBy: from)))
   }
+
+  public func suffix(fromBack: Int) -> String {
+    return String(self.suffix(1))
+  }
+
+  public func groups(_ regexp: NSRegularExpression) -> [[String]] {
+    do {
+      let text = self
+      let matches = regexp.matches(
+        in: text,
+        range: NSRange(text.startIndex..., in: text))
+      return matches.map { match in
+        return (0..<match.numberOfRanges).map {
+          let rangeBounds = match.range(at: $0)
+          guard let range = Range(rangeBounds, in: text) else {
+            return ""
+          }
+          return String(text[range])
+        }
+      }
+    }
+  }
+}
+
+public func lcm(_ a: Int, _ b: Int) -> Int {
+  return abs(a * b) / gcd(a, b)
+}
+
+public func gcd(_ a: Int, _ b: Int) -> Int {
+  return b == 0 ? a : gcd(b, a % b)
 }
 
 public func parseRowObjects<T: RowObject>(input: String, type: T.Type) -> [T] {
@@ -64,12 +94,12 @@ public protocol PositionalRowObject {
   init(row: Int, startPosition: Int, length: Int, content: String) throws
 }
 
-public extension PositionalRowObject {
-  func adjacent(other: PositionalRowObject) -> Bool {
+extension PositionalRowObject {
+  public func adjacent(other: PositionalRowObject) -> Bool {
     return (self.row >= other.row - 1 && self.row <= other.row + 1)
       && (self.endPosition >= other.startPosition - 1
         && self.startPosition <= other.endPosition + 1)
   }
 
-  var endPosition: Int { startPosition + length - 1 }
+  public var endPosition: Int { startPosition + length - 1 }
 }

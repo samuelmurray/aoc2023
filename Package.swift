@@ -6,7 +6,8 @@ import PackageDescription
 let package = Package(
   name: "aoc",
   dependencies: [
-    .package(url: "https://github.com/apple/swift-format.git", branch: "release/5.9")
+    .package(url: "https://github.com/apple/swift-algorithms", from: "1.2.0"),
+    .package(url: "https://github.com/apple/swift-format", branch: "release/5.9"),
   ],
   targets: [
     // Targets are the basic building blocks of a package, defining a module or a test suite.
@@ -22,6 +23,7 @@ let package = Package(
     .target(name: "Day08"),
     .target(name: "Day09"),
     .target(name: "Day10"),
+    .target(name: "Day11", dependencies: [.product(name: "Algorithms", package: "swift-algorithms")]),
     .testTarget(
       name: "UtilsTests",
       dependencies: ["Utils"],
@@ -95,6 +97,13 @@ let package = Package(
     .testTarget(
       name: "Day10Tests",
       dependencies: ["Day10", "Utils"],
+      resources: [
+        .copy("Resources")
+      ]
+    ),
+    .testTarget(
+      name: "Day11Tests",
+      dependencies: ["Day11", "Utils"],
       resources: [
         .copy("Resources")
       ]

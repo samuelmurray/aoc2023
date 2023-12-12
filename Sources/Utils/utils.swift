@@ -46,6 +46,16 @@ extension String {
   }
 }
 
+extension Array {
+  public init(repeating: [Element], count: Int, separator: Element? = nil) {
+    self.init([[Element]](repeating: repeating, count: count).flatMap { $0 })
+  }
+
+  public func repeated(count: Int, separator: Element? = nil) -> [Element] {
+    return [Element](repeating: self, count: count, separator: separator)
+  }
+}
+
 public func lcm(_ a: Int, _ b: Int) -> Int {
   return abs(a * b) / gcd(a, b)
 }

@@ -69,13 +69,14 @@ class Day12Tests: XCTestCase {
   }
 
   func testGenerateTrivial() throws {
-    let result = try generatePossibleRecords([1], 1)
+    let result = try generatePossibleRecords(ConditionRecord(springs: [.unknown]), [1])
 
     XCTAssertEqual([ConditionRecord(springs: [.damaged])], result)
   }
 
   func testGenerateSimple() throws {
-    let result = try generatePossibleRecords([1], 2)
+    let result = try generatePossibleRecords(
+      ConditionRecord(springs: [.unknown].repeated(count: 2)), [1])
 
     XCTAssertEqual(
       [
@@ -85,20 +86,23 @@ class Day12Tests: XCTestCase {
   }
 
   func testGenerateThrows() throws {
-    XCTAssertThrowsError(try generatePossibleRecords([1, 1], 2))
+    XCTAssertThrowsError(
+      try generatePossibleRecords(ConditionRecord(springs: [.unknown].repeated(count: 2)), [1, 1]))
   }
 
   func testGenerateTwoParts() throws {
-    let result = try generatePossibleRecords([1, 1], 3)
+    let result = try generatePossibleRecords(
+      ConditionRecord(springs: [.unknown].repeated(count: 3)), [1, 1])
 
     XCTAssertEqual([ConditionRecord(springs: [.damaged, .operational, .damaged])], result)
   }
 
   func testGenerateAdvanced() throws {
-    let result = try generatePossibleRecords([1, 1, 2], 7)
+    let result = try generatePossibleRecords(
+      ConditionRecord(springs: [.unknown].repeated(count: 7)), [1, 1, 2])
 
     XCTAssertEqual(
-      [
+      Set([
         ConditionRecord(springs: [
           .damaged, .operational, .damaged, .operational, .damaged, .damaged, .operational,
         ]),
@@ -111,7 +115,7 @@ class Day12Tests: XCTestCase {
         ConditionRecord(springs: [
           .operational, .damaged, .operational, .damaged, .operational, .damaged, .damaged,
         ]),
-      ], result)
+      ]), Set(result))
   }
 
   func testCountValidCombinations() {
@@ -130,13 +134,23 @@ class Day12Tests: XCTestCase {
     XCTAssertEqual(1, result)
   }
 
-  /*
   func testRepetitionsMedium() throws {
     let result = try computeSum(["????.#...#... 4,1,1"], duplications: 5)
 
     XCTAssertEqual(16, result)
   }
-  */
+
+  func testRepetitionsLarge() throws {
+    let result = try computeSum(["????.######..#####. 1,6,5"], duplications: 5)
+
+    XCTAssertEqual(2500, result)
+  }
+
+  func testRepetitionsHuge() throws {
+    let result = try computeSum(["?###???????? 3,2,1"], duplications: 5)
+
+    XCTAssertEqual(506250, result)
+  }
 
   func testGivenInput1() throws {
     let filePath = Bundle.module.url(forResource: "test-input1", withExtension: "txt")!
@@ -156,9 +170,8 @@ class Day12Tests: XCTestCase {
     print(result)
   }
 
-  /*
   func testGivenInput2() throws {
-    let filePath = Bundle.module.url(forResource: "test-input2", withExtension: "txt")!
+    let filePath = Bundle.module.url(forResource: "test-input1", withExtension: "txt")!
     let input = readFile(filePath)
 
     let result = try computeSum(input, duplications: 5)
@@ -170,9 +183,8 @@ class Day12Tests: XCTestCase {
     let filePath = Bundle.module.url(forResource: "input1", withExtension: "txt")!
     let input = readFile(filePath)
 
-    let result = try computeSum(input, duplications: 2)
+    let result = try computeSum(Array(input[0..<2]), duplications: 5)
 
-     print(result)
+    print(result)
   }
-  */
 }

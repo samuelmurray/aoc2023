@@ -29,8 +29,10 @@ let package = Package(
       name: "Day12", dependencies: [.product(name: "Algorithms", package: "swift-algorithms")]),
     .target(
       name: "Day13", dependencies: [.product(name: "Algorithms", package: "swift-algorithms")]),
-      .target(
+    .target(
       name: "Day14", dependencies: [.product(name: "Algorithms", package: "swift-algorithms")]),
+    .target(
+      name: "Day15", dependencies: [.product(name: "Algorithms", package: "swift-algorithms")]),
     .testTarget(
       name: "UtilsTests",
       dependencies: ["Utils"],
@@ -132,6 +134,13 @@ let package = Package(
     .testTarget(
       name: "Day14Tests",
       dependencies: ["Day14", "Utils"],
+      resources: [
+        .copy("Resources")
+      ]
+    ),
+    .testTarget(
+      name: "Day15Tests",
+      dependencies: ["Day15", "Utils"],
       resources: [
         .copy("Resources")
       ]

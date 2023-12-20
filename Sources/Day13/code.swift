@@ -13,14 +13,6 @@ func findReflectionLine(_ input: [String], numSmudges: Int = 0) -> Int? {
   return nil
 }
 
-func transpose(_ input: [String]) -> [String] {
-  var transposed: [String] = []
-  for x in 0..<input[0].count {
-    transposed.append(input.map { String($0[x]) }.joined())
-  }
-  return transposed
-}
-
 extension ArraySlice where Element == String {
   func mirrors(_ other: ArraySlice, numSmudges: Int) -> Bool {
     let selfReversed = ArraySlice(self.reversed())
@@ -49,7 +41,7 @@ func computeSum(_ input: [String], numSmudges: Int = 0) -> Int {
   for pattern in groups {
     if let reflection = findReflectionLine(pattern, numSmudges: numSmudges) {
       sum += 100 * reflection
-    } else if let reflection = findReflectionLine(transpose(pattern), numSmudges: numSmudges) {
+    } else if let reflection = findReflectionLine(pattern.transposed(), numSmudges: numSmudges) {
       sum += reflection
     }
   }

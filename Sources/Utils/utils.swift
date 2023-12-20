@@ -50,6 +50,16 @@ extension String {
   }
 }
 
+extension Array where Element == String {
+  public func transposed() -> [String] {
+    var transposed: [String] = []
+    for x in 0..<self[0].count {
+      transposed.append(self.map { String($0[x]) }.joined())
+    }
+    return transposed
+  }
+}
+
 extension Array {
   public init(repeating: [Element], count: Int, separator: Element? = nil) {
     self.init([[Element]](repeating: repeating, count: count).flatMap { $0 })

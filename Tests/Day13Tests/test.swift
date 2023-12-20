@@ -48,7 +48,7 @@ class Day13Tests: XCTestCase {
       "#.#.##.#.",
     ]
 
-    let transposedInput = transpose(input)
+    let transposedInput = input.transposed()
 
     let result = findReflectionLine(transposedInput)
 

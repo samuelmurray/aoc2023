@@ -7,6 +7,7 @@ let package = Package(
   name: "aoc",
   dependencies: [
     .package(url: "https://github.com/apple/swift-algorithms", from: "1.2.0"),
+    .package(url: "https://github.com/apple/swift-collections", from: "1.0.5"),
     .package(url: "https://github.com/apple/swift-format", branch: "release/5.9"),
   ],
   targets: [
@@ -33,6 +34,12 @@ let package = Package(
       name: "Day14", dependencies: [.product(name: "Algorithms", package: "swift-algorithms")]),
     .target(
       name: "Day15", dependencies: [.product(name: "Algorithms", package: "swift-algorithms")]),
+    .target(
+      name: "Day16",
+      dependencies: [
+        .product(name: "Algorithms", package: "swift-algorithms"),
+        .product(name: "Collections", package: "swift-collections"),
+      ]),
     .testTarget(
       name: "UtilsTests",
       dependencies: ["Utils"],
@@ -141,6 +148,13 @@ let package = Package(
     .testTarget(
       name: "Day15Tests",
       dependencies: ["Day15", "Utils"],
+      resources: [
+        .copy("Resources")
+      ]
+    ),
+    .testTarget(
+      name: "Day16Tests",
+      dependencies: ["Day16", "Utils"],
       resources: [
         .copy("Resources")
       ]

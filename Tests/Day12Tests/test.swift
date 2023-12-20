@@ -154,7 +154,7 @@ class Day12Tests: XCTestCase {
 
   func testGivenInput1() throws {
     let filePath = Bundle.module.url(forResource: "test-input1", withExtension: "txt")!
-    let input = readFile(filePath)
+    let input = try readFile(filePath)
 
     let result = try computeSum(input)
 
@@ -163,7 +163,7 @@ class Day12Tests: XCTestCase {
 
   func testUnknownInput1() throws {
     let filePath = Bundle.module.url(forResource: "input1", withExtension: "txt")!
-    let input = readFile(filePath)
+    let input = try readFile(filePath)
 
     let result = try computeSum(input)
 
@@ -172,7 +172,7 @@ class Day12Tests: XCTestCase {
 
   func testGivenInput2() throws {
     let filePath = Bundle.module.url(forResource: "test-input1", withExtension: "txt")!
-    let input = readFile(filePath)
+    let input = try readFile(filePath)
 
     let result = try computeSum(input, duplications: 5)
 
@@ -181,7 +181,7 @@ class Day12Tests: XCTestCase {
 
   func testUnknownInput2() throws {
     let filePath = Bundle.module.url(forResource: "input1", withExtension: "txt")!
-    let input = readFile(filePath)
+    let input = try readFile(filePath)
 
     let result = try computeSum(Array(input[0..<2]), duplications: 5)
 

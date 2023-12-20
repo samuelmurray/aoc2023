@@ -129,36 +129,36 @@ class Day03Tests: XCTestCase {
     XCTAssertEqual(0, result.count)
   }
 
-  func testGivenInput1() {
+  func testGivenInput1() throws {
     let filePath = Bundle.module.url(forResource: "test-input1", withExtension: "txt")!
-    let input = readFile(filePath)
+    let input = try readFile(filePath)
 
     let result = computeSum(input)
 
     XCTAssertEqual(4361, result)
   }
 
-  func testUnknownInput1() {
+  func testUnknownInput1() throws {
     let filePath = Bundle.module.url(forResource: "input1", withExtension: "txt")!
-    let input = readFile(filePath)
+    let input = try readFile(filePath)
 
     let result = computeSum(input)
 
     print(result)
   }
 
-  func testGivenInput2() {
+  func testGivenInput2() throws {
     let filePath = Bundle.module.url(forResource: "test-input1", withExtension: "txt")!
-    let input = readFile(filePath)
+    let input = try readFile(filePath)
 
     let result = computeSum2(input)
 
     XCTAssertEqual(467835, result)
   }
 
-  func testUnknownInput2() {
+  func testUnknownInput2() throws {
     let filePath = Bundle.module.url(forResource: "input1", withExtension: "txt")!
-    let input = readFile(filePath)
+    let input = try readFile(filePath)
 
     let result = computeSum2(input)
 

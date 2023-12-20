@@ -47,29 +47,29 @@ class Day02Tests: XCTestCase {
     XCTAssertFalse(isPossible(subsets, bag))
   }
 
-  func testGivenInput1() {
+  func testGivenInput1() throws {
     let filePath = Bundle.module.url(forResource: "test-input1", withExtension: "txt")!
-    let input = readFile(filePath)
+    let input = try readFile(filePath)
 
     XCTAssertEqual(8, computeSum(input, Subset(reds: 12, greens: 13, blues: 14)))
   }
 
-  func testInput1() {
+  func testInput1() throws {
     let filePath = Bundle.module.url(forResource: "input1", withExtension: "txt")!
-    let input = readFile(filePath)
+    let input = try readFile(filePath)
     let sum = computeSum(input, Subset(reds: 12, greens: 13, blues: 14))
     print(sum)
   }
 
-  func testGivenInput2() {
+  func testGivenInput2() throws {
     let filePath = Bundle.module.url(forResource: "test-input1", withExtension: "txt")!
-    let input = readFile(filePath)
+    let input = try readFile(filePath)
     XCTAssertEqual(2286, computeSumOfSmallestBags(input))
   }
 
-  func testInput2() {
+  func testInput2() throws {
     let filePath = Bundle.module.url(forResource: "input1", withExtension: "txt")!
-    let input = readFile(filePath)
+    let input = try readFile(filePath)
     let sum = computeSumOfSmallestBags(input)
     print(sum)
   }

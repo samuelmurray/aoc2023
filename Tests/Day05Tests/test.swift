@@ -158,10 +158,10 @@ class Day05Tests: XCTestCase {
 
   func testFlattenMapsTwoLayersAdvanced() {
     let map1 = AlmanacMap([
-      AlmanacMapRange(source: 10, destination: 20, length: 10),
+      AlmanacMapRange(source: 10, destination: 20, length: 10)
     ])
     let map2 = AlmanacMap([
-      AlmanacMapRange(source: 20, destination: 30, length: 5),
+      AlmanacMapRange(source: 20, destination: 30, length: 5)
     ])
     let expected = AlmanacMap([
       AlmanacMapRange(source: 10, destination: 30, length: 5),
@@ -171,36 +171,36 @@ class Day05Tests: XCTestCase {
     XCTAssertEqual(expected, result)
   }
 
-  func testGivenInput1() {
+  func testGivenInput1() throws {
     let filePath = Bundle.module.url(forResource: "test-input1", withExtension: "txt")!
-    let input = readFile(filePath)
+    let input = try readFile(filePath)
 
     let result = computeLowestLocation1(input)
 
     XCTAssertEqual(35, result)
   }
 
-  func testUnknownInput1() {
+  func testUnknownInput1() throws {
     let filePath = Bundle.module.url(forResource: "input1", withExtension: "txt")!
-    let input = readFile(filePath)
+    let input = try readFile(filePath)
 
     let result = computeLowestLocation1(input)
 
     print(result)
   }
 
-  func testGivenInput2() {
+  func testGivenInput2() throws {
     let filePath = Bundle.module.url(forResource: "test-input1", withExtension: "txt")!
-    let input = readFile(filePath)
+    let input = try readFile(filePath)
 
     let result = computeLowestLocationByFlatten(input)
 
     XCTAssertEqual(46, result)
   }
 
-  func testUnknownInput2() {
+  func testUnknownInput2() throws {
     let filePath = Bundle.module.url(forResource: "input1", withExtension: "txt")!
-    let input = readFile(filePath)
+    let input = try readFile(filePath)
 
     let result = computeLowestLocationByFlatten(input)
 

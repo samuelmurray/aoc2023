@@ -20,36 +20,36 @@ class Day04Tests: XCTestCase {
     XCTAssertEqual([83, 86, 6, 31, 17, 9, 48, 53], drawnNumbers.map { $0.number })
   }
 
-  func testGivenInput1() {
+  func testGivenInput1() throws {
     let filePath = Bundle.module.url(forResource: "test-input1", withExtension: "txt")!
-    let input = readFile(filePath)
+    let input = try readFile(filePath)
 
     let result = computeSum1(input)
 
     XCTAssertEqual(13, result)
   }
 
-  func testUnknownInput1() {
+  func testUnknownInput1() throws {
     let filePath = Bundle.module.url(forResource: "input1", withExtension: "txt")!
-    let input = readFile(filePath)
+    let input = try readFile(filePath)
 
     let result = computeSum1(input)
 
     print(result)
   }
 
-  func testGivenInput2() {
+  func testGivenInput2() throws {
     let filePath = Bundle.module.url(forResource: "test-input1", withExtension: "txt")!
-    let input = readFile(filePath)
+    let input = try readFile(filePath)
 
     let result = computeSum2(input)
 
     XCTAssertEqual(30, result)
   }
 
-  func testUnknownInput2() {
+  func testUnknownInput2() throws {
     let filePath = Bundle.module.url(forResource: "input1", withExtension: "txt")!
-    let input = readFile(filePath)
+    let input = try readFile(filePath)
 
     let result = computeSum2(input)
 

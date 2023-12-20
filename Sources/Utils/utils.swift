@@ -4,18 +4,22 @@ public enum AocError: Error {
   case runtimeError(String)
 }
 
-public func readFile(_ fileName: String) -> [String] {
+public func readFile(_ fileName: String) throws -> [String] {
   let filePath = URL(fileURLWithPath: fileName)
-  return readFile(filePath)
+  return try readFile(filePath)
 }
 
-public func readFile(_ url: URL) -> [String] {
-  let content = try! String(contentsOf: url.absoluteURL, encoding: .utf8)
+public func readFile(_ url: URL) throws -> [String] {
+  let content = try String(contentsOf: url.absoluteURL, encoding: .utf8)
   var result: [String] = []
   content.enumerateLines { (line, _) -> Void in
     result.append(line)
   }
   return result
+}
+
+extension StringProtocol {
+  public subscript(_ offset: Int) -> Element { self[index(startIndex, offsetBy: offset)] }
 }
 
 extension String {

@@ -27,9 +27,9 @@ class Day01Tests: XCTestCase {
     XCTAssertEqual(77, output)
   }
 
-  func testComputeSum() {
+  func testComputeSum() throws {
     let filePath = Bundle.module.url(forResource: "test-input1", withExtension: "txt")!
-    let input = readFile(filePath)
+    let input = try readFile(filePath)
     let output = computeSum(input)
     XCTAssertEqual(142, output)
   }
@@ -50,22 +50,22 @@ class Day01Tests: XCTestCase {
     XCTAssertEqual(76, getNumber(replaceTextWithDigits("7pqrstsixteen")))
   }
 
-  func testComputeSumWithText() {
+  func testComputeSumWithText() throws {
     let filePath = Bundle.module.url(forResource: "test-input2", withExtension: "txt")!
-    let input = readFile(filePath)
+    let input = try readFile(filePath)
     let output = computeSum(input)
     XCTAssertEqual(281, output)
   }
 
-  func testProper() {
+  func testProper() throws {
     let filePath = Bundle.module.url(forResource: "input1", withExtension: "txt")!
-    let input = readFile(filePath)
+    let input = try readFile(filePath)
     print(computeSum(input))
   }
 
-  func test2() {
+  func test2() throws {
     let filePath = Bundle.module.url(forResource: "input2", withExtension: "txt")!
-    let input = readFile(filePath)
+    let input = try readFile(filePath)
     print(computeSum(input))
   }
 

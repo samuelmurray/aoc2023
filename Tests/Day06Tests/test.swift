@@ -21,7 +21,7 @@ class Day06Tests: XCTestCase {
 
   func testGivenInput1() throws {
     let filePath = Bundle.module.url(forResource: "test-input1", withExtension: "txt")!
-    let input = readFile(filePath)
+    let input = try readFile(filePath)
 
     let result = try computeProduct(input)
 
@@ -30,7 +30,7 @@ class Day06Tests: XCTestCase {
 
   func testUnknownInput1() throws {
     let filePath = Bundle.module.url(forResource: "input1", withExtension: "txt")!
-    let input = readFile(filePath)
+    let input = try readFile(filePath)
 
     let result = try computeProduct(input)
 
@@ -39,8 +39,10 @@ class Day06Tests: XCTestCase {
 
   func testGivenInput2() throws {
     let filePath = Bundle.module.url(forResource: "test-input1", withExtension: "txt")!
-    let input = readFile(filePath)
-    let trimmedInput = input.map {$0.replacingOccurrences(of: "\\s", with: "", options: [.regularExpression])}
+    let input = try readFile(filePath)
+    let trimmedInput = input.map {
+      $0.replacingOccurrences(of: "\\s", with: "", options: [.regularExpression])
+    }
 
     let result = try computeProduct(trimmedInput)
 
@@ -49,8 +51,10 @@ class Day06Tests: XCTestCase {
 
   func testUnknownInput2() throws {
     let filePath = Bundle.module.url(forResource: "input1", withExtension: "txt")!
-    let input = readFile(filePath)
-    let trimmedInput = input.map {$0.replacingOccurrences(of: "\\s", with: "", options: [.regularExpression])}
+    let input = try readFile(filePath)
+    let trimmedInput = input.map {
+      $0.replacingOccurrences(of: "\\s", with: "", options: [.regularExpression])
+    }
 
     let result = try computeProduct(trimmedInput)
 

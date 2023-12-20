@@ -30,7 +30,7 @@ class Day08Tests: XCTestCase {
 
   func testGivenInput11() throws {
     let filePath = Bundle.module.url(forResource: "test-input11", withExtension: "txt")!
-    let input = readFile(filePath)
+    let input = try readFile(filePath)
 
     let result = try computeNumberOfSteps(input)
 
@@ -39,7 +39,7 @@ class Day08Tests: XCTestCase {
 
   func testGivenInput12() throws {
     let filePath = Bundle.module.url(forResource: "test-input12", withExtension: "txt")!
-    let input = readFile(filePath)
+    let input = try readFile(filePath)
 
     let result = try computeNumberOfSteps(input)
 
@@ -48,7 +48,7 @@ class Day08Tests: XCTestCase {
 
   func testUnknownInput1() throws {
     let filePath = Bundle.module.url(forResource: "input1", withExtension: "txt")!
-    let input = readFile(filePath)
+    let input = try readFile(filePath)
 
     let result = try computeNumberOfSteps(input)
 
@@ -57,7 +57,7 @@ class Day08Tests: XCTestCase {
 
   func testGivenInput2() throws {
     let filePath = Bundle.module.url(forResource: "test-input2", withExtension: "txt")!
-    let input = readFile(filePath)
+    let input = try readFile(filePath)
 
     let result = try computeNumberOfStepsGhost(input)
 
@@ -66,7 +66,7 @@ class Day08Tests: XCTestCase {
 
   func testUnknownInput2() throws {
     let filePath = Bundle.module.url(forResource: "input1", withExtension: "txt")!
-    let input = readFile(filePath)
+    let input = try readFile(filePath)
 
     let result = try computeNumberOfStepsGhost(input)
 

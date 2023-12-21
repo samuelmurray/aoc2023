@@ -7,13 +7,15 @@ let package = Package(
   name: "aoc",
   dependencies: [
     .package(url: "https://github.com/apple/swift-algorithms", from: "1.2.0"),
-    .package(url: "https://github.com/apple/swift-collections", from: "1.0.5"),
+    .package(url: "https://github.com/apple/swift-collections", branch: "main"),
     .package(url: "https://github.com/apple/swift-format", branch: "release/5.9"),
   ],
   targets: [
     // Targets are the basic building blocks of a package, defining a module or a test suite.
     // Targets can depend on other targets in this package and products from dependencies.
-    .target(name: "Utils"),
+    .target(
+      name: "Utils", dependencies: [.product(name: "Algorithms", package: "swift-algorithms"),
+      .product(name: "Collections", package: "swift-collections")]),
     .target(name: "Day01"),
     .target(name: "Day02"),
     .target(name: "Day03"),
@@ -36,6 +38,12 @@ let package = Package(
       name: "Day15", dependencies: [.product(name: "Algorithms", package: "swift-algorithms")]),
     .target(
       name: "Day16",
+      dependencies: [
+        .product(name: "Algorithms", package: "swift-algorithms"),
+        .product(name: "Collections", package: "swift-collections"),
+      ]),
+    .target(
+      name: "Day17",
       dependencies: [
         .product(name: "Algorithms", package: "swift-algorithms"),
         .product(name: "Collections", package: "swift-collections"),
@@ -155,6 +163,13 @@ let package = Package(
     .testTarget(
       name: "Day16Tests",
       dependencies: ["Day16", "Utils"],
+      resources: [
+        .copy("Resources")
+      ]
+    ),
+    .testTarget(
+      name: "Day17Tests",
+      dependencies: ["Day17", "Utils"],
       resources: [
         .copy("Resources")
       ]

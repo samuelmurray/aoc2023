@@ -15,7 +15,7 @@ class Day14Tests: XCTestCase {
       throw AocError.runtimeError("File not found")
     }
     let input = try readFile(filePath)
-    //print(spinCycle(input).joined(separator: "\n"))
+    print(spinCycle(input).joined(separator: "\n"))
   }
 
   func testGivenInput1() throws {
